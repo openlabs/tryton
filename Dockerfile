@@ -34,6 +34,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
 RUN apt-get update
 RUN apt-get -y -q install python-software-properties software-properties-common libpq-dev
 RUN apt-get -y -q install postgresql-9.3 postgresql-client-9.3
+RUN sed -i 's/ssl = true/ssl = false/' /etc/postgresql/9.3/main/postgresql.conf
 RUN service postgresql start
 
 # Install the postgres python database driver
