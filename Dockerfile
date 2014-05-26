@@ -11,13 +11,15 @@ MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
 RUN apt-get update
 RUN apt-get -y -q install sudo
 
-# Setup UTF8 locale
+
+# Setup environment and UTF-8 locale
+ENV DEBIAN_FRONTEND noninteractive
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 RUN apt-get -y -q install language-pack-en-base
 RUN locale-gen en_US.UTF-8
-RUN dpkg-reconfigure --frontend noninteractive locales
+RUN dpkg-reconfigure locales
 
 # Install setuptools to install pip
 RUN apt-get -y -q install python-setuptools python-dev
