@@ -10,11 +10,11 @@ Usage
 
 Fetch the repository from docker::
 
-    docker pull openlabs/tryton-docker
+    docker pull openlabs/tryton
 
 Create a new container using the image::
 
-    docker run -d -P 8000 openlabs/tryton-docker
+    docker run -d -P 8000 openlabs/tryton
 
 * The `-d` option indicates that the container should be run in daemon
   mode.
@@ -39,7 +39,7 @@ Running from docker container
 
 You can access the docker container and work from within it.::
 
-    docker run -i -t openlabs/tryton-docker /bin/bash
+    docker run -i -t openlabs/tryton /bin/bash
 
 On execution of the command a new prompt within the container should be
 available to you. Remember that postgres and tryton are not started
