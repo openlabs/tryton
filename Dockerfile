@@ -11,13 +11,16 @@ MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
 RUN apt-get update
 RUN apt-get -y -q install sudo
 
-# Setup UTF8 locale
+
+
+# Setup environment and UTF-8 locale
+ENV DEBIAN_FRONTEND noninteractive
 ENV LANGUAGE en_US.UTF-8
 ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 RUN apt-get -y -q install language-pack-en-base
 RUN locale-gen en_US.UTF-8
-RUN dpkg-reconfigure --frontend noninteractive locales
+RUN dpkg-reconfigure locales
 
 # Install setuptools to install pip
 RUN apt-get -y -q install python-setuptools python-dev
@@ -34,6 +37,7 @@ RUN echo "deb http://apt.postgresql.org/pub/repos/apt/ precise-pgdg main" > /etc
 RUN apt-get update
 RUN apt-get -y -q install python-software-properties software-properties-common libpq-dev
 RUN apt-get -y -q install postgresql-9.3 postgresql-client-9.3
+RUN sed -i 's/ssl = true/ssl = false/' /etc/postgresql/9.3/main/postgresql.conf
 RUN service postgresql start
 
 # Install the postgres python database driver
@@ -69,5 +73,12 @@ ENV TRYTONPASSFILE /.trytonpassfile
 RUN service postgresql start && trytond -c /etc/trytond.conf -i all -d tryton
 # TODO: Setup openoffice reporting
 
-EXPOSE 	8000
+# Allow SSH access to the server
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd 
+RUN echo 'root:password' |chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+ADD supervisor-progs/sshd.conf /etc/supervisor/conf.d/sshd.conf
+
+EXPOSE 	8000 22
 CMD ["/usr/bin/supervisord", "-n"]
