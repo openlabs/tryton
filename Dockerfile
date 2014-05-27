@@ -12,6 +12,7 @@ RUN apt-get update
 RUN apt-get -y -q install sudo
 
 
+
 # Setup environment and UTF-8 locale
 ENV DEBIAN_FRONTEND noninteractive
 ENV LANGUAGE en_US.UTF-8
@@ -72,5 +73,12 @@ ENV TRYTONPASSFILE /.trytonpassfile
 RUN service postgresql start && trytond -c /etc/trytond.conf -i all -d tryton
 # TODO: Setup openoffice reporting
 
-EXPOSE 	8000
+# Allow SSH access to the server
+RUN apt-get install -y openssh-server
+RUN mkdir /var/run/sshd 
+RUN echo 'root:password' |chpasswd
+RUN sed -i 's/PermitRootLogin without-password/PermitRootLogin yes/' /etc/ssh/sshd_config
+ADD supervisor-progs/sshd.conf /etc/supervisor/conf.d/sshd.conf
+
+EXPOSE 	8000 22
 CMD ["/usr/bin/supervisord", "-n"]
