@@ -52,7 +52,7 @@ port on using `docker ps`. You can then connect via SSH using::
 
     ssh root@localhost -p <port>
 
-*Substitute port with the port in the 49*** range indicated by docker ps*
+*Substitute port with the port in the 49xxx range indicated by docker ps*
 
 Running from docker container
 -----------------------------
