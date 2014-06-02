@@ -1,8 +1,8 @@
-# Trytond 3.2
+# Trytond 3.0
 #
 # * Also installs postgres-9.3, the recommended database engine
 #
-# VERSION	3.2.0.1
+# VERSION	3.0.0.1
 
 FROM ubuntu:14.04
 MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
@@ -54,9 +54,9 @@ RUN service postgresql start &&\
       sudo -u postgres psql -h 127.0.0.1 -c "CREATE ROLE tryton WITH LOGIN PASSWORD 'tryton' CREATEDB;" &&\
       sudo -u postgres createdb -h 127.0.0.1 -O tryton -E UNICODE -l en_US.UTF8 -T template0 tryton
 
-# Install latest trytond in 3.2.x series
+# Install latest trytond in 3.0.x series
 RUN apt-get -y -q install python-lxml
-RUN pip install 'trytond>=3.2,<3.3'
+RUN pip install 'trytond>=3.0,<3.1'
 
 # Copy trytond.conf from local folder to /etc/trytond.conf
 RUN useradd --system tryton
