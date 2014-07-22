@@ -2,8 +2,7 @@ Tryton Dockerfile
 =================
 
 This Dockerfile will run the steps required to build a working image of
-Tryton. It also installs postgres. The build is based on the `ubuntu` base
-image provided by docker.
+Tryton. The build is based on the `ubuntu` base image provided by docker.
 
 Usage
 -----
@@ -34,25 +33,11 @@ The output in the PORTS column should look like `0.0.0.0:49153->8000/tcp`.
 You should now be able to connect to tryton on the port 49153. (Note:
 Substitute the port number with what is displayed on your docker host.)
 
-SSH into the container
-``````````````````````
+SSH into the container (Deprecated)
+```````````````````````````````````
 
-The docker container also runs an ssh daemon which will let you connect to
-the container over ssh. Though the port 22 is exposed by the container, it
-may not be bound to the container host if you have not explicitly bound it
-using `-p 22`.
-
-.. tip::
-
-   You could also use `-P` (in capital) to bind all the ports exposed to
-   the container. `Read more <http://docs.docker.io.s3-website-us-west-2.amazonaws.com/reference/run/#expose-incoming-ports>`_
-
-If the port is already bound to the host, you should be able to see the
-port on using `docker ps`. You can then connect via SSH using::
-
-    ssh root@localhost -p <port>
-
-*Substitute port with the port in the 49xxx range indicated by docker ps*
+The container originally did support SSH but was subsequently removed.
+`Read Why <http://blog.docker.com/2014/06/why-you-dont-need-to-run-sshd-in-docker/>`_
 
 Running from docker container
 -----------------------------
@@ -62,37 +47,56 @@ You can access the docker container and work from within it.::
     docker run -i -t openlabs/tryton /bin/bash
 
 On execution of the command a new prompt within the container should be
-available to you. Remember that postgres and tryton are not started
+available to you. Remember that trytond (default service) is not started
 automatically for you when you access the container in this manner. To
-start both services, run::
+start trytond, run::
 
-    supervisord
-
-To see the current status of the processes::
-
-    supervisorctl status
-
-This should show the status of postgres and tryton.
-
-Perhaps, you want to run tryton yourself::
-
-    supervisorctl stop tryton
     trytond -c /etc/trytond.conf
-
-and you can do everything you normally do with the tryton daemon script.
 
 More details
 ------------
 
-The docker image entry point is the supervisor daemon which then runs
-postgres and tryton on separate processes.
+This is a minimalistic Docker container for Tryton which could be used in
+both production and developemnt. Further step if you intend on using this
+as a base image is below.
 
-  * `Postgres supervisor configuration <supervisor-progs/postgresql.conf>`_
-  * `Tryton supervisor configuration <supervisor-progs/trytond.conf>`_
-  * `SSH supervisor configuration <supervisor-progs/sshd.conf>`_
+Extending this image
+````````````````````
 
-The tryton configuration used by tryton is at `/etc/trytond.conf
-<trytond.conf>`_
+This docker image is a minimal base on which you should extend and write
+your own modules. The following example steps would be required to say
+make your setup work with postgres and install the sale module.
+
+.. source-code::
+
+    # Trytond 3.2 with Sale module and Postgres
+    #
+    # VERSION	3.2.0.1
+
+    FROM openlabs/tryton:3.2
+    MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
+
+    # Setup psycopg2 since you want to connect to postgres
+    # database
+    RUN apt-get -y -q install python-dev libpq-dev
+    RUN pip install psycopg2
+
+    # Setup the sale module since it is a required for this
+    # custom setup
+    RUN pip install 'trytond_sale>=3.2,<3.3'
+
+    # Copy new trytond.conf from local folder to /etc/trytond.conf
+    # The new trytond also has credentials to connect to the postgres
+    # server which is accessible elsewhere
+    ADD trytond.conf /etc/trytond.conf
+
+This example can be downloaded as a `gist <https://gist.github.com/sharoonthomas/a75cf7b02173fa3556cf>`_
+
+TODO
+----
+
+* Ability to load configuration parameters from environment variables.
+  (`See why? <http://12factor.net/config>`)
 
 Authors and Contributors
 ------------------------
