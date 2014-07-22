@@ -1,17 +1,15 @@
-Tryton Dockerfile
-=================
+# Tryton Dockerfile
 
 This Dockerfile will run the steps required to build a working image of
 Tryton. The build is based on the `ubuntu` base image provided by docker.
 
-Usage
------
+## Usage
 
-Fetch the repository from docker::
+Fetch the repository from docker
 
     docker pull openlabs/tryton
 
-Create a new container using the image::
+Create a new container using the image
 
     docker run -d -P 8000 openlabs/tryton
 
@@ -20,12 +18,11 @@ Create a new container using the image::
 * The `-p` option and it's value `8000` instructs docker to bind TCP port 8000
   of the container to a dynamically allocated TCP port on all available
   interfaces of the host machine.
-  See `ports documentation 
-  <http://docs.docker.io/use/port_redirection/#port-redirection>`_ for a
-  more detailed explanation on how the port exposed by the container is
+  See [ports documentation](http://docs.docker.io/use/port_redirection/#port-redirection)
+  for a more detailed explanation on how the port exposed by the container is
   bound to the host running the docker container.
 
-To find the port that tryton in now bound to::
+To find the port that tryton in now bound to
 
     docker ps
 
@@ -33,14 +30,12 @@ The output in the PORTS column should look like `0.0.0.0:49153->8000/tcp`.
 You should now be able to connect to tryton on the port 49153. (Note:
 Substitute the port number with what is displayed on your docker host.)
 
-SSH into the container (Deprecated)
-```````````````````````````````````
+**SSH into the container (Deprecated)**
 
 The container originally did support SSH but was subsequently removed.
-`Read Why <http://blog.docker.com/2014/06/why-you-dont-need-to-run-sshd-in-docker/>`_
+[Read Why](http://blog.docker.com/2014/06/why-you-dont-need-to-run-sshd-in-docker/)
 
-Running from docker container
------------------------------
+## Running from docker container
 
 You can access the docker container and work from within it.::
 
@@ -53,21 +48,18 @@ start trytond, run::
 
     trytond -c /etc/trytond.conf
 
-More details
-------------
+## More details
 
 This is a minimalistic Docker container for Tryton which could be used in
 both production and developemnt. Further step if you intend on using this
 as a base image is below.
 
-Extending this image
-````````````````````
+**Extending this image**
 
 This docker image is a minimal base on which you should extend and write
 your own modules. The following example steps would be required to say
 make your setup work with postgres and install the sale module.
 
-.. source-code::
 
     # Trytond 3.2 with Sale module and Postgres
     #
@@ -90,23 +82,19 @@ make your setup work with postgres and install the sale module.
     # server which is accessible elsewhere
     ADD trytond.conf /etc/trytond.conf
 
-This example can be downloaded as a `gist <https://gist.github.com/sharoonthomas/a75cf7b02173fa3556cf>`_
+This example can be downloaded as a [gist](https://gist.github.com/sharoonthomas/a75cf7b02173fa3556cf).
 
-TODO
-----
+## TODO
 
 * Ability to load configuration parameters from environment variables.
-  (`See why? <http://12factor.net/config>`)
+  [See why?](http://12factor.net/config)
 
-Authors and Contributors
-------------------------
+## Authors and Contributors
 
-This image was built at `Openlabs <http://www.openlabs.co.in>`_. 
+This image was built at [Openlabs](http://www.openlabs.co.in).
 
-Professional Support
---------------------
+## Professional Support
 
-This image is professionally supported by `Openlabs <http://www.openlabs.co.in>`_.
+This image is professionally supported by [Openlabs](http://www.openlabs.co.in).
 If you are looking for on-site teaching or consulting support, contact our
-`sales <mailto:sales@openlabs.co.in>`_ and `support
-<mailto:support@openlabs.co.in>`_ teams.
+[sales](mailto:sales@openlabs.co.in) and [support](mailto:support@openlabs.co.in) teams.
