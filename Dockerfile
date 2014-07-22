@@ -38,4 +38,4 @@ ENV TRYTONPASSFILE /.trytonpassfile
 # TODO: Setup openoffice reporting
 
 EXPOSE 	8000
-CMD ["/usr/bin/trytond", "-c /etc/trytond.conf"]
+CMD ["/usr/local/bin/trytond", "-c/etc/trytond.conf", "-v"]
