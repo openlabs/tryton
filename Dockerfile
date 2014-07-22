@@ -15,12 +15,9 @@ ENV LANG en_US.UTF-8
 ENV LC_ALL en_US.UTF-8
 
 # Install setuptools to install pip
-RUN apt-get -y -q install python-setuptools python-dev libpq-dev
+RUN apt-get -y -q install python-setuptools
 # setuptools sucks! install pip
 RUN easy_install pip
-
-# Install the postgres python database driver
-RUN pip install psycopg2
 
 # Install latest trytond in 3.0.x series
 RUN apt-get -y -q install python-lxml
