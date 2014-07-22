@@ -1,6 +1,6 @@
 # Trytond 3.0
 #
-# VERSION	3.0.0.1
+# VERSION	3.0.1.0
 
 FROM ubuntu:14.04
 MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
