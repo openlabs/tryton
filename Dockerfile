@@ -1,38 +1,22 @@
-# Trytond 3.2
-#
-# VERSION	3.2.1.0
+FROM openlabs/tryton:3.2
+MAINTAINER Umang Arora <umang.arora@openlabs.co.in>
 
-FROM ubuntu:14.04
-MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
-
-# Update package repository
+RUN sed 's/main$/main universe/' -i /etc/apt/sources.list
 RUN apt-get update
+RUN apt-get upgrade -y
 
-# Setup environment and UTF-8 locale
-ENV DEBIAN_FRONTEND noninteractive
-ENV LANGUAGE en_US.UTF-8
-ENV LANG en_US.UTF-8
-ENV LC_ALL en_US.UTF-8
+# Install dependencies for wkhtmltopdf
+RUN apt-get install -y openssl build-essential xorg libssl-dev libxrender-dev wget xvfb git-core fontconfig curl
 
-# Install setuptools to install pip
-RUN apt-get -y -q install python-setuptools
-# setuptools sucks! install pip
-RUN easy_install pip
+# Install dependencies of QT
+RUN apt-get install -y libfontconfig1-dev libfreetype6-dev libx11-dev libxcursor-dev libxext-dev libxfixes-dev libxft-dev libxi-dev libxrandr-dev
 
-# Install latest trytond in 3.2.x series
-RUN apt-get -y -q install python-lxml
-RUN pip install 'trytond>=3.2,<3.3'
+# Install QT from git repository
+ADD install_qt.sh /install_qt.sh
+RUN /install_qt.sh
 
-# Copy trytond.conf from local folder to /etc/trytond.conf
-ADD trytond.conf /etc/trytond.conf
-
-# Create an empty folder for tryton data store
-RUN mkdir -p /var/lib/trytond
-
-# Intiialise the database
-RUN echo admin > /.trytonpassfile
-ENV TRYTONPASSFILE /.trytonpassfile
-# TODO: Setup openoffice reporting
-
-EXPOSE 	8000
-CMD ["/usr/local/bin/trytond", "-c/etc/trytond.conf", "-v"]
+# Install wkhtmltopdf 0.12.1 stable
+RUN wget http://citylan.dl.sourceforge.net/project/wkhtmltopdf/0.12.1/wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN dpkg -i wkhtmltox-0.12.1_linux-trusty-amd64.deb
+RUN mv /usr/local/bin/wkhtmltopdf /usr/local/bin/wkhtmltopdf_orig
+ADD wkhtmltopdf /usr/local/bin/wkhtmltopdf
