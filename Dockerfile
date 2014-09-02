@@ -23,6 +23,10 @@ RUN easy_install pip
 RUN apt-get -y -q install python-lxml
 RUN pip install 'trytond>=3.2,<3.3'
 
+# Install cdecimal
+RUN sudo apt-get -y -q install gcc make python-dev
+RUN pip install --allow-external cdecimal cdecimal
+
 # Copy trytond.conf from local folder to /etc/trytond.conf
 ADD trytond.conf /etc/trytond.conf
 
