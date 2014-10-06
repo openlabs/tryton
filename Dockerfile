@@ -32,7 +32,10 @@ RUN mkdir -p /var/lib/trytond
 # Intiialise the database
 RUN echo admin > /.trytonpassfile
 ENV TRYTONPASSFILE /.trytonpassfile
-# TODO: Setup openoffice reporting
+
+# Install packages for openoffice reporting
+# libreoffice gets installed as it's a requirement of unoconv
+RUN apt-get -y -q install unoconv
 
 EXPOSE 	8000
 CMD ["/usr/local/bin/trytond", "-c/etc/trytond.conf", "-v"]
