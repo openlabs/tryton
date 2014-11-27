@@ -38,4 +38,5 @@ ENV TRYTONPASSFILE /.trytonpassfile
 RUN apt-get -y -q install unoconv
 
 EXPOSE 	8000
-CMD ["/usr/local/bin/trytond", "-c/etc/trytond.conf", "-v"]
+CMD ["-c", "/etc/trytond.conf", "-v"]
+ENTRYPOINT ["/usr/local/bin/trytond"]
