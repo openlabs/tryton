@@ -61,11 +61,10 @@ your own modules. The following example steps would be required to say
 make your setup work with postgres and install the sale module.
 
 
-    # Trytond 3.2 with Sale module and Postgres
+    # Trytond 3.4 with Sale module and Postgres
     #
-    # VERSION	3.2.0.1
 
-    FROM openlabs/tryton:3.2
+    FROM openlabs/tryton:3.4
     MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
 
     # Setup psycopg2 since you want to connect to postgres
@@ -75,7 +74,7 @@ make your setup work with postgres and install the sale module.
 
     # Setup the sale module since it is a required for this
     # custom setup
-    RUN pip install 'trytond_sale>=3.2,<3.3'
+    RUN pip install 'trytond_sale>=3.4,<3.5'
 
     # Copy new trytond.conf from local folder to /etc/trytond.conf
     # The new trytond also has credentials to connect to the postgres

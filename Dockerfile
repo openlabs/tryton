@@ -1,6 +1,5 @@
-# Trytond 3.2
+# Trytond 3.4
 #
-# VERSION	3.2.0.1
 
 FROM ubuntu:14.04
 MAINTAINER Sharoon Thomas <sharoon.thomas@openlabs.co.in>
@@ -19,9 +18,9 @@ RUN apt-get -y -q install python-setuptools
 # setuptools sucks! install pip
 RUN easy_install pip
 
-# Install latest trytond in 3.2.x series
+# Install latest trytond in 3.4.x series
 RUN apt-get -y -q install python-lxml
-RUN pip install 'trytond>=3.2,<3.3'
+RUN pip install 'trytond>=3.4,<3.5'
 
 # Copy trytond.conf from local folder to /etc/trytond.conf
 ADD trytond.conf /etc/trytond.conf
