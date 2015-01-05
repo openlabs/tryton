@@ -21,7 +21,7 @@ RUN easy_install pip
 
 # Install latest trytond in 3.2.x series
 RUN apt-get -y -q install python-lxml
-RUN pip install 'trytond>=3.2,<3.3'
+RUN pip install 'trytond>=3.2.4,<3.3'
 
 # Copy trytond.conf from local folder to /etc/trytond.conf
 ADD trytond.conf /etc/trytond.conf
