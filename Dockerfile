@@ -28,8 +28,8 @@ ADD trytond.conf /etc/trytond.conf
 # Create an empty folder for tryton data store
 RUN mkdir -p /var/lib/trytond
 
-# Intiialise the database
-RUN echo admin > /.trytonpassfile
+# Intiialise the database with 'admin' as default passwd
+RUN echo jkUbZGvFNeugk > /.trytonpassfile
 ENV TRYTONPASSFILE /.trytonpassfile
 
 # Install packages for openoffice reporting
