@@ -11,7 +11,7 @@ Fetch the repository from docker
 
 Create a new container using the image
 
-    docker run -d -P 8000 openlabs/tryton
+    docker run -d -p 8000 openlabs/tryton
 
 * The `-d` option indicates that the container should be run in daemon
   mode.
